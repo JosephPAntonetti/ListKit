@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 public struct ModelControlsModifier<Editor: View>
 : ViewModifier {
@@ -13,8 +14,12 @@ public struct ModelControlsModifier<Editor: View>
     let editor : (() -> Editor)?
     let onDelete: (() -> Void)?
     
+    private var model : (any PersistentModel)?
+    
     @State private var editorIsPresented = false
     @State private var deleteConfirmationIsPresented = false
+    
+    @Environment(\.modelContext) private var modelContext
     
     public init(
         editor: (() -> Editor)? = nil,
@@ -23,6 +28,11 @@ public struct ModelControlsModifier<Editor: View>
             self.onDelete = onDelete
         }
     
+    public init(editor: (() -> Editor)? = nil, model: any PersistentModel) {
+        self.editor = editor
+        self.model = model
+        self.onDelete = nil
+    }
     
     public func body(content: Content) -> some View {
         content
@@ -32,7 +42,7 @@ public struct ModelControlsModifier<Editor: View>
                         editorIsPresented = true
                     }
                 }
-                if onDelete != nil {
+                if onDelete != nil || model != nil {
                     Button("Delete", systemImage: "trash", role: .destructive) {
                         deleteConfirmationIsPresented = true
                     }
@@ -45,6 +55,14 @@ public struct ModelControlsModifier<Editor: View>
             }
             .alert("Confirm Delete", isPresented: $deleteConfirmationIsPresented, actions: {
                 Button("Confirm", role: .destructive) {
+                    if let model = model {
+                        do {
+                            modelContext.delete(model)
+                            try modelContext.save()
+                        } catch {
+                            fatalError("Failed to delete model")
+                        }
+                    }
                     if let onDelete = onDelete {
                         onDelete()
                     }
