@@ -16,11 +16,13 @@ public struct SortModeSelector<Model : Sortable>: View {
     }
     
     public var body: some View {
-        Picker("Sort Mode", selection: $sortMode.animation()) {
-            ForEach(Model.SortModels) {
-                mode in
-                Text(mode.label)
-                    .tag(mode)
+        Menu("Sort", systemImage: "line.3.horizontal.decrease.circle.fill") {
+            Picker("Sort", systemImage: "line.3.horizontal.decrease.circle.fill", selection: $sortMode.animation()) {
+                ForEach(Model.SortModels) {
+                    mode in
+                    Text(mode.label)
+                        .tag(mode)
+                }
             }
         }
     }
