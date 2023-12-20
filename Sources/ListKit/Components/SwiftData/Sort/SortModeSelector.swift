@@ -25,7 +25,15 @@ public struct SortModeSelector<Model : Sortable>: View {
                 }
             }
         } label: {
-            Label(sortMode.label, systemImage: sortMode.systemImage)
+            Image(systemName: sortMode.systemImage)
+                .font(.system(.body, design: .rounded, weight: .semibold))
+                .symbolRenderingMode(.hierarchical)
+                .foregroundStyle(.primary)
+                .padding(.all, 4)
+                .background {
+                    Circle()
+                        .foregroundStyle(.primary.quinary)
+                }
         }
         .contentTransition(.symbolEffect(.replace.downUp))
     }
