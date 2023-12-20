@@ -13,14 +13,15 @@ public struct ModelControlsModifier<Editor: View>
     let editor : (() -> Editor)?
     let onDelete: (() -> Void)?
     
-    @State private var isPresented = false
+    @State private var editorIsPresented = false
+    @State private var deleteConfirmationIsPresented = false
     
     public init(
         editor: (() -> Editor)? = nil,
         onDelete: (() -> Void)? = nil) {
-        self.editor = editor
-        self.onDelete = onDelete
-    }
+            self.editor = editor
+            self.onDelete = onDelete
+        }
     
     
     public func body(content: Content) -> some View {
@@ -28,19 +29,28 @@ public struct ModelControlsModifier<Editor: View>
             .contextMenu {
                 if editor != nil {
                     Button("Edit", systemImage: "pencil") {
-                        isPresented = true
+                        editorIsPresented = true
                     }
                 }
-                if let onDelete = onDelete {
-                    Button("Delete", systemImage: "trash") {
-                        onDelete()
+                if onDelete != nil {
+                    Button("Delete", systemImage: "trash", role: .destructive) {
+                        deleteConfirmationIsPresented = true
                     }
                 }
             }
-            .sheet(isPresented: $isPresented) {
+            .sheet(isPresented: $editorIsPresented) {
                 if let editor = editor {
                     editor()
                 }
+            }
+            .alert("Confirm Delete", isPresented: $deleteConfirmationIsPresented, actions: {
+                Button("Confirm", role: .destructive) {
+                    if let onDelete = onDelete {
+                        onDelete()
+                    }
+                }
+            }) {
+                Text("Are you sure you want to delete?")
             }
     }
 }
