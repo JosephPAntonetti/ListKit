@@ -25,7 +25,7 @@ public struct SortModeSelector<Model : Sortable>: View {
                 }
             }
         } label: {
-            Image(systemName: sortMode.systemImage)
+            Label(sortMode.label, systemImage: sortMode.systemImage)
         }
         .contentTransition(.symbolEffect(.replace.downUp))
     }
