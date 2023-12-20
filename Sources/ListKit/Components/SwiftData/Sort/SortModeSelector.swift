@@ -16,14 +16,17 @@ public struct SortModeSelector<Model : Sortable>: View {
     }
     
     public var body: some View {
-        Menu("Sort", systemImage: "line.3.horizontal.decrease.circle.fill") {
+        Menu {
             Picker("Sort", systemImage: "line.3.horizontal.decrease.circle.fill", selection: $sortMode.animation()) {
                 ForEach(Model.SortModels) {
                     mode in
-                    Text(mode.label)
+                    Label(mode.label, systemImage: mode.systemImage)
                         .tag(mode)
                 }
             }
+        } label: {
+            Image(systemName: sortMode.systemImage)
         }
+        .contentTransition(.symbolEffect(.replace.downUp))
     }
 }

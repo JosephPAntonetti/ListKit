@@ -14,13 +14,13 @@ import SwiftData
     var value : Int
     
     static var DefaultSortMode: SortMode<ExampleModel> {
-        SortMode(label: "By Text", descriptor: .init(\ExampleModel.text))
+        SortMode(systemImage: "plus", label: "By Text", descriptor: .init(\ExampleModel.text))
     }
     
     static var SortModels: [SortMode<ExampleModel>] {
         [
-            SortMode(label: "By Text", descriptor: .init(\ExampleModel.text)),
-            SortMode(label: "By Value", descriptor: .init(\ExampleModel.value))
+            SortMode(systemImage: "plus", label: "By Text", descriptor: .init(\ExampleModel.text)),
+            SortMode(systemImage: "square", label: "By Value", descriptor: .init(\ExampleModel.value))
         ]
     }
     

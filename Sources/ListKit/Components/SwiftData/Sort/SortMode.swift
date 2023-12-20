@@ -14,10 +14,12 @@ public struct SortMode<Model : PersistentModel> : Identifiable, Hashable {
         descriptor.hashValue
     }
     
+    let systemImage : String
     public let label : String
     public let descriptor : SortDescriptor<Model>
     
-    public init(label: String, descriptor: SortDescriptor<Model>) {
+    public init(systemImage: String, label: String, descriptor: SortDescriptor<Model>) {
+        self.systemImage = systemImage
         self.label = label
         self.descriptor = descriptor
     }
