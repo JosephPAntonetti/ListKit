@@ -8,13 +8,13 @@
 import SwiftUI
 import SwiftData
 
-struct DynamicList<Model: PersistentModel, Row: View>: View {
+public struct DynamicList<Model: PersistentModel, Row: View>: View {
     
     @Query private var items : [Model]
     
     @ViewBuilder let row : (Model) -> Row
     
-    init(
+    public init(
         filter: Predicate<Model>? = nil,
         sort: [SortDescriptor<Model>] = [],
         animation: Animation,
@@ -23,7 +23,7 @@ struct DynamicList<Model: PersistentModel, Row: View>: View {
             self.row = row
         }
     
-    init(
+    public init(
         filter: Predicate<Model>? = nil,
         sort: SortMode<Model>,
         animation: Animation,
@@ -33,7 +33,7 @@ struct DynamicList<Model: PersistentModel, Row: View>: View {
         self.row = row
     }
     
-    var body: some View {
+    public var body: some View {
         ForEach(items) {
             row($0)
         }
