@@ -8,10 +8,21 @@
 import Foundation
 import SwiftData
 
-@Model final class ExampleModel {
+@Model final class ExampleModel : Sortable {
     
     var text : String
     var value : Int
+    
+    static var DefaultSortMode: SortMode<ExampleModel> {
+        SortMode(label: "By Text", descriptor: .init(\ExampleModel.text))
+    }
+    
+    static var SortModels: [SortMode<ExampleModel>] {
+        [
+            SortMode(label: "By Text", descriptor: .init(\ExampleModel.text)),
+            SortMode(label: "By Value", descriptor: .init(\ExampleModel.value))
+        ]
+    }
     
     init(text: String, value: Int) {
         self.text = text

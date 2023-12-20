@@ -10,29 +10,18 @@ import SwiftData
 
 struct DynamicListExample: View {
     
-    @State var sort : SortDescriptor = .init(\ExampleModel.text)
+    @State var sortMode = ExampleModel.DefaultSortMode
     
     var body: some View {
         NavigationView {
             List {
-                DynamicList(sort: [sort], animation: .easeInOut) {
+                DynamicList(sort: sortMode, animation: .easeInOut) {
                     model in Text("\(model.text):\(model.value)")
                 }
             }
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
-                    Button("By Text") {
-                        withAnimation {
-                            sort = .init(\ExampleModel.text)
-                        }
-                    }
-                }
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("By Value") {
-                        withAnimation {
-                            sort = .init(\ExampleModel.value)
-                        }
-                    }
+                    SortModeSelector(sortMode: $sortMode)
                 }
             }
         }

@@ -23,6 +23,16 @@ struct DynamicList<Model: PersistentModel, Row: View>: View {
             self.row = row
         }
     
+    init(
+        filter: Predicate<Model>? = nil,
+        sort: SortMode<Model>,
+        animation: Animation,
+        row: @escaping (Model) -> Row
+    ) {
+        _items = Query(filter: filter, sort: [sort.descriptor], animation: animation)
+        self.row = row
+    }
+    
     var body: some View {
         ForEach(items) {
             row($0)
